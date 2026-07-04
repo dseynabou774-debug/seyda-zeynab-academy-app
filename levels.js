@@ -49,8 +49,12 @@ function letterName(letter) {
   return letter["name_" + lang] || letter.name_fr;
 }
 
-function audioSrcFor(letterId) {
-  return `audio_${letterId}.mp3`;
+function audioSourcesFor(letterId) {
+  // Plusieurs formats acceptés : selon l'app d'enregistrement utilisée sur le
+  // téléphone (Voice Recorder, etc.), le fichier peut être .mp3, .m4a, .wav
+  // ou .ogg. Le navigateur essaie chaque source dans l'ordre et garde la
+  // première qui fonctionne — aucune conversion de format n'est nécessaire.
+  return ["mp3", "m4a", "wav", "ogg"].map((ext) => `audio_${letterId}.${ext}`);
 }
 
 const LEVELS = [

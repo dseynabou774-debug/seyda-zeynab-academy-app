@@ -377,7 +377,9 @@ function renderListenRepeat(level) {
         <button class="btn gold" id="playBtn">🔊 ${t("playAudio")}</button>
       </div>
       <div id="audioMissingNote"></div>
-      <audio id="letterAudio" src="${audioSrcFor(letter.id)}" preload="none"></audio>
+      <audio id="letterAudio" preload="none">
+        ${audioSourcesFor(letter.id).map((src) => `<source src="${src}">`).join("")}
+      </audio>
 
       <div class="audio-row" style="margin-top:22px">
         <button class="record-btn ${rt.recording ? "recording" : ""}" id="recordBtn">${rt.recording ? "■" : "🎤"}</button>
