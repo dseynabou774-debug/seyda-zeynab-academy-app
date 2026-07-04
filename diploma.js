@@ -101,7 +101,7 @@ async function buildDiplomaPdf(opts) {
  * et retourne l'enregistrement complet.
  */
 async function createDiplomaForLevel(level, lang) {
-  const student = await DB.getStudent();
+  const student = STATE.student;
   const studentName = student?.fullName || "—";
   const certNumber = generateCertNumber();
   const issuedAt = Date.now();
@@ -116,6 +116,7 @@ async function createDiplomaForLevel(level, lang) {
 
   const diploma = {
     id: certNumber,
+    studentId: STATE.activeStudentId,
     levelId: level.id,
     levelTitle: levelTitleStr,
     lang,

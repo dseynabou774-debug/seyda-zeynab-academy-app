@@ -101,6 +101,20 @@ a { color: inherit; }
 
 main { flex: 1; padding: 6px 20px 20px; }
 
+.active-student-pill {
+  margin: 0 20px 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--color-surface-2);
+  color: var(--color-ink);
+  font-size: 12.5px;
+  font-weight: 600;
+  padding: 6px 14px;
+  border-radius: 999px;
+  cursor: pointer;
+}
+
 /* ---------- Star / progress node (signature element) ---------- */
 .star8 {
   --s: 46px;
