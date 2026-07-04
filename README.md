@@ -4,7 +4,7 @@ Application web progressive (PWA) pour apprendre la lecture arabe jusqu'à la
 lecture du Coran, en HTML/CSS/JS pur (aucun framework, aucune dépendance de
 build — tout fonctionne directement dans le navigateur).
 
-## Ce qui est fonctionnel dans cette version
+## Ce qui est fonctionnel dans cette version  .
 
 - **Parcours complet des 15 niveaux** affiché et verrouillé/déverrouillé
   progressivement (un niveau se débloque quand le précédent est validé).
