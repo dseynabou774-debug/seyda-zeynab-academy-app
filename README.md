@@ -9,7 +9,7 @@ build — tout fonctionne directement dans le navigateur).
 - **Parcours complet des 15 niveaux** affiché et verrouillé/déverrouillé
   progressivement (un niveau se débloque quand le précédent est validé).
 - **Niveau 1 — Reconnaissance des lettres** : flashcards (28 lettres) +
-  quiz à choix multiples avec correction immédiate.
+  quiz à choix multiples avec correction immédiate. . 
 - **Niveau 2 — Prononciation** : écoute audio (voir ci-dessous) +
   auto-enregistrement vocal pour s'entraîner (pas de reconnaissance vocale
   automatique hors ligne — l'élève réécoute sa propre voix pour se corriger).
