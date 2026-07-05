@@ -4,19 +4,18 @@ Application web progressive (PWA) pour apprendre la lecture arabe jusqu'à la
 lecture du Coran, en HTML/CSS/JS pur (aucun framework, aucune dépendance de
 build — tout fonctionne directement dans le navigateur).
 
-## Ce qui est fonctionnel dans cette version  .
+## Ce qui est fonctionnel dans cette version
 
-- **Parcours complet des 15 niveaux** affiché et verrouillé/déverrouillé
-  progressivement (un niveau se débloque quand le précédent est validé).
-- **Niveau 1 — Reconnaissance des lettres** : flashcards (28 lettres) +
-  quiz à choix multiples avec correction immédiate. . 
-- **Niveau 2 — Prononciation** : écoute audio (voir ci-dessous) +
-  auto-enregistrement vocal pour s'entraîner (pas de reconnaissance vocale
-  automatique hors ligne — l'élève réécoute sa propre voix pour se corriger).
-- **Niveaux 3 à 15** : présents dans le parcours avec leur titre et
-  description (fidèles au plan pédagogique demandé), affichés « en
-  préparation » tant qu'aucun moteur d'exercice n'y est branché. Voir
-  *Prochaines étapes* plus bas.
+- **Parcours organisé par séances multi-matières** (Coran / Athkars / Fiqh /
+  Exercices / Évaluation), verrouillées/déverrouillées progressivement (une
+  séance se débloque quand les 5 matières de la précédente sont validées).
+- **Séance 1 — Coran : Alphabet** : flashcards (28 lettres) + quiz, puis
+  écoute audio + auto-enregistrement vocal pour la prononciation.
+- **Séances 1 à 3** : matières Athkars/Fiqh renseignées (titres donnés par
+  l'enseignante), avec un système "marquer comme acquis" (la leçon est
+  enseignée en direct pendant le cours, l'app sert de suivi/déblocage).
+- **Séances 4 à 13** : structure prête, contenu Coran/Athkars/Fiqh à
+  compléter par l'enseignante.
 - **Profil élève** simple (nom, enfant/adulte) stocké en local.
 - **Progression, badges** (un badge par niveau validé) et **tableau de bord**.
 - **Génération de diplômes en PDF**, en français/anglais/italien, avec
