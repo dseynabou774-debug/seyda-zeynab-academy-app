@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Les Cinq Piliers de l'Islam - Exercices</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<style>
+  :root{
+    --green-dark:#0b3d2e;
+    --green:#145c45;
+    --green-soft:#e7f2ec;
+    --gold:#c9a44c;
+    --gold-light:#f3e6c4;
+    --ink:#1c2b25;
+    --paper:#fbf9f3;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:'Georgia', 'Times New Roman', serif;
+    background:var(--paper);
+    color:var(--ink);
+    display:flex;
+    justify-content:center;
+    padding:16px;
+  }
+  #card{
+    max-width:480px;
+    width:100%;
+    background:var(--paper);
+    border:2px solid var(--gold);
+    border-radius:14px;
+    overflow:hidden;
+    box-shadow:0 4px 18px rgba(11,61,46,0.18);
+  }
+  .header{
+    background:linear-gradient(135deg,var(--green-dark),var(--green));
+    color:var(--gold-light);
+    padding:22px 20px 18px;
+    text-align:center;
+    position:relative;
+  }
+  .header::after{
+    content:"";
+    display:block;
+    height:3px;
+    margin:14px auto 0;
+    width:60px;
+    background:var(--gold);
+    border-radius:2px;
+  }
+  .school{
+    font-size:12px;
+    letter-spacing:2px;
+    text-transform:uppercase;
+    color:var(--gold);
+    margin-bottom:6px;
+  }
+  .title{
+    font-size:22px;
+    font-weight:bold;
+    line-height:1.3;
+  }
+  .subtitle{
+    font-size:13px;
+    color:var(--gold-light);
+    opacity:0.85;
+    margin-top:4px;
+  }
+  .langs{
+    display:flex;
+    justify-content:center;
+    gap:8px;
+    padding:12px;
+    background:var(--green-soft);
+    border-bottom:1px solid var(--gold-light);
+  }
+  .lang-btn{
+    border:1px solid var(--green);
+    background:var(--paper);
+    color:var(--green-dark);
+    padding:6px 14px;
+    border-radius:20px;
+    font-size:13px;
+    font-weight:bold;
+    cursor:pointer;
+    font-family:inherit;
+  }
+  .lang-btn.active{
+    background:var(--green);
+    color:var(--gold-light);
+  }
+  .content{
+    padding:20px;
+  }
+  .exo{
+    margin-bottom:26px;
+    padding-bottom:20px;
+    border-bottom:1px dashed var(--gold);
+  }
+  .exo:last-child{
+    border-bottom:none;
+    margin-bottom:0;
+    padding-bottom:0;
+  }
+  .exo-title{
+    font-size:15px;
+    font-weight:bold;
+    color:var(--green-dark);
+    margin-bottom:10px;
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  .exo-num{
+    background:var(--gold);
+    color:var(--green-dark);
+    width:22px;
+    height:22px;
+    border-radius:50%;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    font-size:12px;
+    flex-shrink:0;
+  }
+  .line{
+    font-size:14.5px;
+    line-height:1.9;
+    margin:6px 0;
+  }
+  .blank{
+    display:inline-block;
+    min-width:90px;
+    border-bottom:1.5px solid var(--green);
+    text-align:center;
+    font-style:italic;
+    color:var(--green);
+  }
+  .vf-row{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    padding:8px 0;
+    font-size:14px;
+  }
+  .vf-buttons{
+    display:flex;
+    gap:6px;
+    flex-shrink:0;
+  }
+  .vf-btn{
+    border:1.5px solid var(--green);
+    background:var(--paper);
+    color:var(--green-dark);
+    padding:4px 10px;
+    border-radius:6px;
+    font-size:12px;
+    cursor:pointer;
+    font-family:inherit;
+  }
+  .vf-btn.selected{
+    background:var(--green);
+    color:var(--gold-light);
+  }
+  .match-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:8px;
+    font-size:13.5px;
+  }
+  .match-item{
+    background:var(--green-soft);
+    border:1px solid var(--gold);
+    border-radius:8px;
+    padding:8px;
+  }
+  .match-col-title{
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:1px;
+    color:var(--gold);
+    margin-bottom:6px;
+    font-weight:bold;
+  }
+  .open-q{
+    font-size:14.5px;
+    line-height:1.8;
+    background:var(--green-soft);
+    padding:12px;
+    border-left:3px solid var(--gold);
+    border-radius:6px;
+  }
+  .draw-box{
+    border:2px dashed var(--green);
+    border-radius:10px;
+    padding:22px 12px;
+    text-align:center;
+    font-size:13.5px;
+    color:var(--green-dark);
+    background:var(--green-soft);
+  }
+  .pillars-illustration{
+    display:flex;
+    justify-content:center;
+    gap:6px;
+    margin-top:10px;
+  }
+  .pillar-col{
+    width:24px;
+    height:44px;
+    background:var(--gold);
+    border-radius:3px 3px 0 0;
+    position:relative;
+  }
+  .toggle-answers{
+    display:block;
+    margin:18px auto 0;
+    background:var(--green-dark);
+    color:var(--gold-light);
+    border:none;
+    padding:10px 18px;
+    border-radius:24px;
+    font-size:13px;
+    font-weight:bold;
+    cursor:pointer;
+    font-family:inherit;
+  }
+  .answer{
+    display:none;
+    font-size:13px;
+    color:var(--green);
+    font-style:italic;
+    margin-top:6px;
+    padding-left:4px;
+  }
+  .answers-visible .answer{
+    display:block;
+  }
+  .footer{
+    padding:14px 20px 20px;
+    text-align:center;
+  }
+  .share-btn{
+    background:#25D366;
+    color:#fff;
+    border:none;
+    padding:12px 22px;
+    border-radius:24px;
+    font-size:14px;
+    font-weight:bold;
+    cursor:pointer;
+    font-family:inherit;
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+  }
+  .signature{
+    margin-top:12px;
+    font-size:11px;
+    color:var(--green);
+    opacity:0.7;
+  }
+  [data-lang]{display:none;}
+  [data-lang].active-lang{display:block;}
+</style>
+</head>
+<body>
+
+<div id="card">
+  <div class="header">
+    <div class="school">Seyda Zeynab Academy</div>
+    <div class="title" data-lang="fr" class="active-lang">Les Cinq Piliers de l'Islam</div>
+    <div class="title" data-lang="en">The Five Pillars of Islam</div>
+    <div class="title" data-lang="it">I Cinque Pilastri dell'Islam</div>
+    <div class="subtitle" data-lang="fr">Fiche d'exercices — Niveau débutant</div>
+    <div class="subtitle" data-lang="en">Exercise sheet — Beginner level</div>
+    <div class="subtitle" data-lang="it">Scheda di esercizi — Livello principiante</div>
+  </div>
+
+  <div class="langs">
+    <button class="lang-btn active" onclick="setLang('fr')">FR</button>
+    <button class="lang-btn" onclick="setLang('en')">EN</button>
+    <button class="lang-btn" onclick="setLang('it')">IT</button>
+  </div>
+
+  <div class="content" id="content">
+
+    <!-- EXERCICE 1 -->
+    <div class="exo">
+      <div class="exo-title" data-lang="fr"><span class="exo-num">1</span>Complète les noms des piliers</div>
+      <div class="exo-title" data-lang="en"><span class="exo-num">1</span>Fill in the names of the pillars</div>
+      <div class="exo-title" data-lang="it"><span class="exo-num">1</span>Completa i nomi dei pilastri</div>
+
+      <div data-lang="fr">
+        <div class="line">La Chahada — <span class="blank">l'attestation de foi</span></div>
+        <div class="line">La Salat — <span class="blank">?</span></div>
+        <div class="line">La Zakat — <span class="blank">?</span></div>
+        <div class="line">Le Sawm — <span class="blank">?</span></div>
+        <div class="line">Le Hajj — <span class="blank">?</span></div>
+        <div class="answer">Réponses : la prière · l'aumône obligatoire · le jeûne · le pèlerinage à la Mecque</div>
+      </div>
+      <div data-lang="en">
+        <div class="line">Shahada — <span class="blank">testimony of faith</span></div>
+        <div class="line">Salat — <span class="blank">?</span></div>
+        <div class="line">Zakat — <span class="blank">?</span></div>
+        <div class="line">Sawm — <span class="blank">?</span></div>
+        <div class="line">Hajj — <span class="blank">?</span></div>
+        <div class="answer">Answers: prayer · obligatory charity · fasting · pilgrimage to Mecca</div>
+      </div>
+      <div data-lang="it">
+        <div class="line">Shahada — <span class="blank">attestazione di fede</span></div>
+        <div class="line">Salat — <span class="blank">?</span></div>
+        <div class="line">Zakat — <span class="blank">?</span></div>
+        <div class="line">Sawm — <span class="blank">?</span></div>
+        <div class="line">Hajj — <span class="blank">?</span></div>
+        <div class="answer">Risposte: la preghiera · l'elemosina obbligatoria · il digiuno · il pellegrinaggio alla Mecca</div>
+      </div>
+    </div>
+
+    <!-- EXERCICE 2 -->
+    <div class="exo">
+      <div class="exo-title" data-lang="fr"><span class="exo-num">2</span>Vrai ou Faux</div>
+      <div class="exo-title" data-lang="en"><span class="exo-num">2</span>True or False</div>
+      <div class="exo-title" data-lang="it"><span class="exo-num">2</span>Vero o Falso</div>
+
+      <div data-lang="fr" id="vf-fr"></div>
+      <div data-lang="en" id="vf-en"></div>
+      <div data-lang="it" id="vf-it"></div>
+    </div>
+
+    <!-- EXERCICE 3 -->
+    <div class="exo">
+      <div class="exo-title" data-lang="fr"><span class="exo-num">3</span>Associe chaque pilier à sa définition</div>
+      <div class="exo-title" data-lang="en"><span class="exo-num">3</span>Match each pillar to its definition</div>
+      <div class="exo-title" data-lang="it"><span class="exo-num">3</span>Abbina ogni pilastro alla sua definizione</div>
+
+      <div data-lang="fr">
+        <div class="match-grid">
+          <div class="match-item"><div class="match-col-title">Pilier</div>1. Chahada<br>2. Salat<br>3. Zakat<br>4. Sawm<br>5. Hajj</div>
+          <div class="match-item"><div class="match-col-title">Définition</div>A. Le jeûne<br>B. L'aumône<br>C. La prière<br>D. L'attestation de foi<br>E. Le pèlerinage</div>
+        </div>
+        <div class="answer">Réponses : 1-D · 2-C · 3-B · 4-A · 5-E</div>
+      </div>
+      <div data-lang="en">
+        <div class="match-grid">
+          <div class="match-item"><div class="match-col-title">Pillar</div>1. Shahada<br>2. Salat<br>3. Zakat<br>4. Sawm<br>5. Hajj</div>
+          <div class="match-item"><div class="match-col-title">Definition</div>A. Fasting<br>B. Charity<br>C. Prayer<br>D. Testimony of faith<br>E. Pilgrimage</div>
+        </div>
+        <div class="answer">Answers: 1-D · 2-C · 3-B · 4-A · 5-E</div>
+      </div>
+      <div data-lang="it">
+        <div class="match-grid">
+          <div class="match-item"><div class="match-col-title">Pilastro</div>1. Shahada<br>2. Salat<br>3. Zakat<br>4. Sawm<br>5. Hajj</div>
+          <div class="match-item"><div class="match-col-title">Definizione</div>A. Il digiuno<br>B. L'elemosina<br>C. La preghiera<br>D. L'attestazione di fede<br>E. Il pellegrinaggio</div>
+        </div>
+        <div class="answer">Risposte: 1-D · 2-C · 3-B · 4-A · 5-E</div>
+      </div>
+    </div>
+
+    <!-- EXERCICE 4 -->
+    <div class="exo">
+      <div class="exo-title" data-lang="fr"><span class="exo-num">4</span>Question ouverte</div>
+      <div class="exo-title" data-lang="en"><span class="exo-num">4</span>Open question</div>
+      <div class="exo-title" data-lang="it"><span class="exo-num">4</span>Domanda aperta</div>
+
+      <div class="open-q" data-lang="fr">Pourquoi penses-tu que la prière (Salat) se fait 5 fois par jour, et pas une seule fois ?</div>
+      <div class="open-q" data-lang="en">Why do you think prayer (Salat) is performed 5 times a day, and not just once?</div>
+      <div class="open-q" data-lang="it">Secondo te, perché la preghiera (Salat) si fa 5 volte al giorno e non una sola volta?</div>
+    </div>
+
+    <!-- EXERCICE 5 -->
+    <div class="exo">
+      <div class="exo-title" data-lang="fr"><span class="exo-num">5</span>Dessine les cinq piliers</div>
+      <div class="exo-title" data-lang="en"><span class="exo-num">5</span>Draw the five pillars</div>
+      <div class="exo-title" data-lang="it"><span class="exo-num">5</span>Disegna i cinque pilastri</div>
+
+      <div class="draw-box" data-lang="fr">
+        Dessine 5 colonnes qui soutiennent une maison. Écris un pilier sur chaque colonne.
+        <div class="pillars-illustration">
+          <div class="pillar-col"></div><div class="pillar-col"></div><div class="pillar-col"></div><div class="pillar-col"></div><div class="pillar-col"></div>
+        </div>
+      </div>
+      <div class="draw-box" data-lang="en">
+        Draw 5 columns holding up a house. Write one pillar on each column.
+        <div class="pillars-illustration">
+          <div class="pillar-col"></div><div class="pillar-col"></div><div class="pillar-col"></div><div class="pillar-col"></div><div class="pillar-col"></div>
+        </div>
+      </div>
+      <div class="draw-box" data-lang="it">
+        Disegna 5 colonne che reggono una casa. Scrivi un pilastro su ogni colonna.
+        <div class="pillars-illustration">
+          <div class="pillar-col"></div><div class="pillar-col"></div><div class="pillar-col"></div><div class="pillar-col"></div><div class="pillar-col"></div>
+        </div>
+      </div>
+    </div>
+
+    <button class="toggle-answers" onclick="toggleAnswers()" id="ansBtn">
+      <span data-lang="fr">Afficher les réponses</span>
+      <span data-lang="en">Show answers</span>
+      <span data-lang="it">Mostra le risposte</span>
+    </button>
+
+  </div>
+
+  <div class="footer">
+    <button class="share-btn" onclick="shareCard()">
+      📤 <span data-lang="fr">Partager sur WhatsApp</span><span data-lang="en">Share on WhatsApp</span><span data-lang="it">Condividi su WhatsApp</span>
+    </button>
+    <div class="signature">Seyda Zeynab Academy · تعليم القرآن</div>
+  </div>
+</div>
+
+<script>
+const vfData = {
+  fr: [
+    "On prie cinq fois par jour.",
+    "Le Hajj est obligatoire chaque année pour tout musulman.",
+    "La Zakat est une aumône donnée aux pauvres.",
+    "Le Sawm, c'est le jeûne du mois de Ramadan."
+  ],
+  en: [
+    "Muslims pray five times a day.",
+    "Hajj is obligatory every year for every Muslim.",
+    "Zakat is charity given to the poor.",
+    "Sawm is the fast of the month of Ramadan."
+  ],
+  it: [
+    "Si prega cinque volte al giorno.",
+    "L'Hajj è obbligatorio ogni anno per ogni musulmano.",
+    "La Zakat è un'elemosina data ai poveri.",
+    "Il Sawm è il digiuno del mese di Ramadan."
+  ]
+};
+const vfAnswers = [true, false, true, true];
+const vfLabels = {
+  fr: {v:"Vrai", f:"Faux"},
+  en: {v:"True", f:"False"},
+  it: {v:"Vero", f:"Falso"}
+};
+
+function buildVF(){
+  ['fr','en','it'].forEach(lang=>{
+    const container = document.getElementById('vf-'+lang);
+    container.innerHTML = '';
+    vfData[lang].forEach((text, i)=>{
+      const row = document.createElement('div');
+      row.className = 'vf-row';
+      row.innerHTML = `<span>${text}</span>
+        <span class="vf-buttons">
+          <button class="vf-btn" onclick="selectVF(this,${i},true)">${vfLabels[lang].v}</button>
+          <button class="vf-btn" onclick="selectVF(this,${i},false)">${vfLabels[lang].f}</button>
+        </span>`;
+      container.appendChild(row);
+    });
+  });
+}
+
+function selectVF(btn, idx, val){
+  const row = btn.closest('.vf-row');
+  row.querySelectorAll('.vf-btn').forEach(b=>b.classList.remove('selected'));
+  btn.classList.add('selected');
+  const correct = vfAnswers[idx];
+  btn.style.background = (val === correct) ? '#145c45' : '#a33';
+  btn.style.color = '#f3e6c4';
+  btn.style.borderColor = btn.style.background;
+}
+
+buildVF();
+
+let currentLang = 'fr';
+function setLang(lang){
+  currentLang = lang;
+  document.querySelectorAll('[data-lang]').forEach(el=>{
+    el.classList.toggle('active-lang', el.getAttribute('data-lang') === lang);
+  });
+  document.querySelectorAll('.lang-btn').forEach(b=>b.classList.remove('active'));
+  event.target.classList.add('active');
+}
+setLang('fr');
+
+function toggleAnswers(){
+  document.getElementById('content').classList.toggle('answers-visible');
+}
+
+async function shareCard(){
+  const card = document.getElementById('card');
+  const canvas = await html2canvas(card, {backgroundColor:'#fbf9f3', scale:2});
+  canvas.toBlob(async (blob)=>{
+    const file = new File([blob], 'cinq-piliers-exercices.png', {type:'image/png'});
+    if(navigator.canShare && navigator.canShare({files:[file]})){
+      try{
+        await navigator.share({files:[file], title:'Les Cinq Piliers de l\'Islam'});
+      }catch(e){}
+    } else {
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'cinq-piliers-exercices.png';
+      a.click();
+    }
+  }, 'image/png');
+}
+</script>
+</body>
+</html>
