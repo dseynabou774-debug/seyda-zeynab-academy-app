@@ -1,4 +1,11 @@
-// =============================================================================
+function whatsappLink(number, text) {
+  const digits = (number || "").replace(/[^\d]/g, "");
+  const encodedText = text ? encodeURIComponent(text) : "";
+  if (digits) {
+    return `https://wa.me/${digits}${encodedText ? "?text=" + encodedText : ""}`;
+  }
+  return `https://api.whatsapp.com/send${encodedText ? "?text=" + encodedText : ""}`;
+}// =============================================================================
 // FICHE COMPLÈTE ÉLÈVE — regroupe en une seule page : informations
 // générales, suivi pédagogique, carnet de suivi pédagogique, suivi détaillé
 // du Coran (sourate/versets), emploi du temps, paiements, diplômes/bulletins
