@@ -100,6 +100,14 @@ function migrateDiscoverContent(discover) {
     faq: { ...base.faq, ...(discover.faq || {}) },
     countries: discover.countries && typeof discover.countries === "object" ? discover.countries : {},
   };
+function whatsappLink(number, text) {
+  const digits = (number || "").replace(/[^\d]/g, "");
+  const encodedText = text ? encodeURIComponent(text) : "";
+  if (digits) {
+    return `https://wa.me/${digits}${encodedText ? "?text=" + encodedText : ""}`;
+  }
+  return `https://api.whatsapp.com/send${encodedText ? "?text=" + encodedText : ""}`;
+}
 
 }async function boot() {
   const savedSettings = await DB.getSettings();
