@@ -74,7 +74,34 @@ function openConfirmModal(title, message, onConfirm) {
 // -----------------------------------------------------------------------
 // Boot
 // -----------------------------------------------------------------------
-async function boot() {
+function migrateDiscoverContent(discover) {
+  const langs = (typeof DISCOVER_LANGS !== "undefined" && DISCOVER_LANGS.length) ? DISCOVER_LANGS : ["fr", "en", "it"];
+  const emptyStrObj = () => Object.fromEntries(langs.map((l) => [l, ""]));
+  const emptyArrObj = () => Object.fromEntries(langs.map((l) => [l, []]));
+
+  const base = {
+    description: emptyStrObj(),
+    subjects: emptyArrObj(),
+    courseFlow: emptyStrObj(),
+    scheduleSlots: emptyArrObj(),
+    rules: emptyArrObj(),
+    faq: emptyArrObj(),
+    countries: {},
+  };
+
+  if (!discover || typeof discover !== "object") return base;
+
+  return {
+    description: { ...base.description, ...(discover.description || {}) },
+    subjects: { ...base.subjects, ...(discover.subjects || {}) },
+    courseFlow: { ...base.courseFlow, ...(discover.courseFlow || {}) },
+    scheduleSlots: { ...base.scheduleSlots, ...(discover.scheduleSlots || {}) },
+    rules: { ...base.rules, ...(discover.rules || {}) },
+    faq: { ...base.faq, ...(discover.faq || {}) },
+    countries: discover.countries && typeof discover.countries === "object" ? discover.countries : {},
+  };
+
+}async function boot() {
   const savedSettings = await DB.getSettings();
   if (savedSettings) STATE.settings = { language: savedSettings.language, theme: savedSettings.theme, activeStudentId: savedSettings.activeStudentId || null, payment: savedSettings.payment, lastExportedAt: savedSettings.lastExportedAt || null };
   STATE.settings.payment = { ...defaultPaymentSettings(), ...(STATE.settings.payment || {}) };
