@@ -5,8 +5,6 @@
 // débloque que lorsque les 5 onglets de la séance en cours sont validés.
 // =============================================================================
 
-const DISCOVER_LANGS = ["fr", "en", "it", "ar"];
-const DISCOVER_COUNTRIES = ["SN", "FR", "IT", "US"];
 const BADGES = SESSIONS.map((s) => ({ id: `session_${s.id}`, sessionId: s.id }));
 
 const STATE = {
