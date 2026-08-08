@@ -5,7 +5,7 @@
 // rafraîchissement du cache sur les téléphones déjà installés.
 // =============================================================================
 
-const CACHE_NAME = "sza-cache-v70";
+const CACHE_NAME = "sza-cache-v71";
 
 const CORE_ASSETS = [
   "./",
