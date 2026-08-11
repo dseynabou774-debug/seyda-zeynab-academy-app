@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1" />
+<title>Seyda Zeynab Academy</title>
+<meta name="description" content="Application éducative pour apprendre la lecture arabe et la lecture du Coran, pas à pas." />
+<meta name="theme-color" content="#0E6355" />
+<link rel="manifest" href="manifest.json" />
+<link rel="icon" href="icon-192.png" />
+<link rel="apple-touch-icon" href="apple-touch-icon.png" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=Amiri:wght@400;700&family=Great+Vibes&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet" />
+
+<link rel="stylesheet" href="styles.css" />
+
+<!-- =====================================================================
+     ATTRAPE-ERREUR DE SECOURS — affiche directement à l'écran (au lieu
+     d'un écran blanc silencieux) le message exact de toute erreur qui
+     empêcherait l'application de démarrer. Purement temporaire/diagnostic :
+     à retirer une fois le problème d'écran blanc résolu. Ne remplace rien
+     d'existant, s'ajoute juste en plus, tout en haut, pour être actif même
+     si un fichier plus loin plante.
+     ===================================================================== -->
+<style>
+  #boot-error-box { display:none; position:fixed; inset:0; background:#fff8f0; color:#5a1a1a;
+    font-family: monospace, sans-serif; font-size:13px; padding:20px; z-index:999999;
+    overflow:auto; white-space:pre-wrap; word-break:break-word; line-height:1.5; }
+  #boot-error-box h2 { color:#b02a2a; font-size:17px; margin:0 0 12px; }
+</style>
+<div id="boot-error-box"></div>
+<script>
+  function showBootError(label, detail) {
+    var box = document.getElementById("boot-error-box");
+    if (!box) return;
+    box.style.display = "block";
+    box.innerHTML = "<h2>⚠️ Erreur au chargement</h2>" +
+      "<div><b>" + label + "</b></div><div style='margin-top:10px'>" +
+      String(detail).replace(/</g, "&lt;") + "</div>";
+  }
+  window.addEventListener("error", function (e) {
+    showBootError(
+      "Erreur JavaScript : " + (e.message || "inconnue"),
+      "Fichier : " + (e.filename || "?") + "\nLigne : " + (e.lineno || "?") + ", Colonne : " + (e.colno || "?") +
+      (e.error && e.error.stack ? "\n\n" + e.error.stack : "")
+    );
+  });
+  window.addEventListener("unhandledrejection", function (e) {
+    var reason = e.reason;
+    showBootError(
+      "Erreur non gérée (promesse) :",
+      (reason && reason.stack) ? reason.stack : String(reason)
+    );
+  });
+</script>
+</head>
+<body>
+  <div id="app">
+    <!-- rendu dynamique par js/app.js -->
+  </div>
+
+  <!-- jsPDF : utilisé uniquement pour générer les diplômes en PDF -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <!-- QRCode : QR code de vérification sur les diplômes -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+  <script src="i18n.js"></script>
+  <script src="sessions.js"></script>
+  <script src="quran.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="db.js"></script>
+  <script src="diploma.js"></script>
+  <script src="billing.js"></script>
+  <script src="receipt.js"></script>
+  <script src="discover.js"></script>
+  <script src="schedule.js"></script>
+  <script src="teacher.js"></script>
+  <script src="student-profile.js"></script>
+  <script src="app.js"></script>
+     
+</body>
+</html>      
