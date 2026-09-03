@@ -274,170 +274,50 @@ function tx(storeName, mode = "readonly") {
 }
 
 // =============================================================================
-// SYNCHRONISATION CLOUD (Supabase) — NOUVEAU
+// STOCKAGE 100% LOCAL (IndexedDB)
 //
-// Principe : une seule table générique "academy_data" (teacher_key, store,
-// record_id, data, updated_at) héberge TOUTES les catégories de données
-// (élèves, progression, badges, diplômes, facturation, etc.), scoping par
-// "teacher_key" (code d'accès personnel, comme un mot de passe).
+// La couche de synchronisation cloud (Supabase) a été retirée le 3 sept.
+// 2026 : ce téléphone est le seul appareil utilisé pour cette Academy, la
+// synchronisation multi-appareils n'était donc pas nécessaire, et elle
+// causait deux problèmes concrets : l'application mettait plusieurs
+// minutes à s'ouvrir quand le projet Supabase gratuit s'était mis en
+// pause, et les ajouts/suppressions d'élèves étaient parfois annulés en
+// silence si l'écriture vers Supabase échouait pendant que la lecture
+// suivante réécrasait la donnée locale avec l'ancienne version du cloud.
 //
-// Les fonctions idbGet/idbGetAll/idbPut/idbDelete ci-dessous gardent
-// exactement les mêmes noms et signatures qu'avant : tout le reste du
-// fichier (l'objet DB, 500+ lignes) n'a donc besoin d'AUCUNE modification.
-//
-// Le store "recordings" (enregistrements vocaux, fichiers audio) reste
-// pour l'instant 100% local — ce sera une phase séparée.
+// idbGet/idbGetAll/idbPut/idbDelete gardent exactement les mêmes noms et
+// signatures qu'avant : tout le reste du fichier (l'objet DB, 500+ lignes)
+// n'a donc eu besoin d'AUCUNE modification, pas plus que billing.js,
+// receipt.js, discover.js, schedule.js, teacher.js ou student-profile.js.
 // =============================================================================
 
-const SUPABASE_URL = 'https://tpivirycaomrgfjzhoel.supabase.co';
-const SUPABASE_ANON_KEY = 'sb_publishable_Kdv-5yqVudvcluAUVosUfg_HAwEhLRA';
-const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-const ACADEMY_TABLE = 'academy_data';
-
-let _teacherKey = localStorage.getItem('academy_teacher_key');
-function getTeacherKey() {
-  if (!_teacherKey) {
-    _teacherKey = prompt(
-      "Code d'accès de ton espace enseignant (crée-en un si c'est la première fois, puis utilise EXACTEMENT le même sur tous tes appareils) :"
-    );
-    if (_teacherKey) {
-      _teacherKey = _teacherKey.trim();
-      localStorage.setItem('academy_teacher_key', _teacherKey);
-    }
-  }
-  return _teacherKey;
-}
-
-// Champ servant de clé primaire dans chaque store d'origine (IndexedDB),
-// utilisé pour reconstituer record_id lors de l'écriture vers Supabase.
-const KEY_PATHS = {
-  students: "id",
-  progress: "key",
-  badges: "key",
-  diplomas: "id",
-  settings: "id",
-  memorization: "key",
-  billing: "studentId",
-  families: "id",
-  registrations: "id",
-  schedule: "id",
-  courseLogs: "id",
-  studentNotes: "id",
-  quranTracking: "id",
-  topicTracking: "id",
-  alphabetTracking: "id",
-  surahChecklist: "studentId",
-};
-
-// Stores qui restent purement locaux (contenu binaire volumineux).
-const LOCAL_ONLY_STORES = new Set(["recordings"]);
-
-// --- Implémentation locale d'origine (IndexedDB), conservée telle quelle
-//     comme cache/secours et pour les stores 100% locaux. ---
-const localIdbGet = (store, key) =>
+const idbGet = (store, key) =>
   tx(store).then((s) => new Promise((res, rej) => {
     const r = s.get(key);
     r.onsuccess = () => res(r.result || null);
     r.onerror = () => rej(r.error);
   }));
 
-const localIdbGetAll = (store) =>
+const idbGetAll = (store) =>
   tx(store).then((s) => new Promise((res, rej) => {
     const r = s.getAll();
     r.onsuccess = () => res(r.result || []);
     r.onerror = () => rej(r.error);
   }));
 
-const localIdbPut = (store, value) =>
+const idbPut = (store, value) =>
   tx(store, "readwrite").then((s) => new Promise((res, rej) => {
     const r = s.put(value);
     r.onsuccess = () => res(value);
     r.onerror = () => rej(r.error);
   }));
 
-const localIdbDelete = (store, key) =>
+const idbDelete = (store, key) =>
   tx(store, "readwrite").then((s) => new Promise((res, rej) => {
     const r = s.delete(key);
     r.onsuccess = () => res(true);
     r.onerror = () => rej(r.error);
   }));
-
-// --- Accès Supabase (source de vérité pour les stores synchronisés) ---
-async function cloudGetAll(store) {
-  const key = getTeacherKey();
-  if (!key) return [];
-  const { data, error } = await sb.from(ACADEMY_TABLE).select('data')
-    .eq('teacher_key', key).eq('store', store);
-  if (error) { console.error('Erreur Supabase (lecture)', error); throw error; }
-  return (data || []).map((r) => r.data);
-}
-
-async function cloudGet(store, recordId) {
-  const key = getTeacherKey();
-  if (!key) return null;
-  const { data, error } = await sb.from(ACADEMY_TABLE).select('data')
-    .eq('teacher_key', key).eq('store', store).eq('record_id', String(recordId)).maybeSingle();
-  if (error) { console.error('Erreur Supabase (lecture)', error); throw error; }
-  return data ? data.data : null;
-}
-
-async function cloudPut(store, value) {
-  const key = getTeacherKey();
-  if (!key) return value;
-  const recordId = String(value[KEY_PATHS[store]]);
-  const { error } = await sb.from(ACADEMY_TABLE).upsert({
-    teacher_key: key, store, record_id: recordId, data: value, updated_at: new Date().toISOString(),
-  }, { onConflict: 'teacher_key,store,record_id' });
-  if (error) console.error('Erreur Supabase (écriture)', error);
-  return value;
-}
-
-async function cloudDelete(store, recordId) {
-  const key = getTeacherKey();
-  if (!key) return true;
-  const { error } = await sb.from(ACADEMY_TABLE).delete()
-    .eq('teacher_key', key).eq('store', store).eq('record_id', String(recordId));
-  if (error) console.error('Erreur Supabase (suppression)', error);
-  return true;
-}
-
-// --- Points d'entrée utilisés par tout le reste du fichier (inchangés) ---
-const idbGet = async (store, key) => {
-  if (LOCAL_ONLY_STORES.has(store)) return localIdbGet(store, key);
-  try {
-    const remote = await cloudGet(store, key);
-    if (remote) { localIdbPut(store, remote).catch(() => {}); return remote; }
-    return localIdbGet(store, key);
-  } catch (e) {
-    return localIdbGet(store, key);
-  }
-};
-
-const idbGetAll = async (store) => {
-  if (LOCAL_ONLY_STORES.has(store)) return localIdbGetAll(store);
-  try {
-    const remote = await cloudGetAll(store);
-    if (remote.length) {
-      remote.forEach((r) => localIdbPut(store, r).catch(() => {}));
-      return remote;
-    }
-    return localIdbGetAll(store);
-  } catch (e) {
-    return localIdbGetAll(store);
-  }
-};
-
-const idbPut = async (store, value) => {
-  localIdbPut(store, value).catch(() => {});
-  if (LOCAL_ONLY_STORES.has(store)) return value;
-  return cloudPut(store, value);
-};
-
-const idbDelete = async (store, key) => {
-  localIdbDelete(store, key).catch(() => {});
-  if (LOCAL_ONLY_STORES.has(store)) return true;
-  return cloudDelete(store, key);
-};
 
 const DB = {
   // --- students (profils) ---
@@ -678,3 +558,4 @@ const DB = {
     if (data.settings) await idbPut("settings", data.settings);
   },
 };
+
